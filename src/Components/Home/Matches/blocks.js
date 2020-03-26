@@ -23,7 +23,7 @@ class Blocks extends Component {
             match
         </div>
     )
-
+    
     render() {
         console.log(this.state)
         return (
