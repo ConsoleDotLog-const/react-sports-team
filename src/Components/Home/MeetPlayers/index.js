@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Stripes from '../../../Resources/images/stripes.png'
 import { Tag } from '../../UI/misc'
+import Reveal from 'react-reveal/Reveal'
 
 class MeetPlayers extends Component {
 
@@ -9,7 +10,13 @@ class MeetPlayers extends Component {
     }
     render() {
         return (
-            <div className="home_meetplayers"
+            <Reveal
+            // fraction={}
+                onReveal={()=>{
+                    console.log('reveal')
+                }}
+            >
+                <div className="home_meetplayers"
                 style={{
                     background:`#ffffff url(${Stripes})`
                 }}
@@ -54,11 +61,16 @@ class MeetPlayers extends Component {
                             </div>
                             <div>
                                 <Tag 
-                                    bck="#fffffff"
+                                    bck="#ffffff"
                                     size='27px'
                                     color="#0e1731"
                                     link={true}
                                     linkto="/the_team"
+                                    add={{
+                                        display:'inline-block',
+                                        marginBottom:'27px',
+                                        border:'1px solid #0e1731'
+                                    }}
                                    
                                     >
                                     Meet Them Here
@@ -71,7 +83,9 @@ class MeetPlayers extends Component {
 
                 </div>
             </div>
-        );
+       
+            </Reveal>
+          );   
     }
 }
 
