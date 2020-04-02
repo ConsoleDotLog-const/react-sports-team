@@ -60,6 +60,7 @@ class HomeCards extends Component {
                             lastname="Otamendi"
                             bck={Otamendi}
                             
+                            
                         />
                         </div>
                     )
