@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Fade from 'react-reveal/Fade';
+import FormField from '../../UI/formFields'
 
 
 class Enroll extends Component {
@@ -7,7 +8,7 @@ class Enroll extends Component {
     state = {
         fromError:false,
         formSuccess:"",
-        formData:{
+        formdata:{
             email:{
                 element:'input',
                 value:'',
@@ -26,11 +27,30 @@ class Enroll extends Component {
         }
     }
 
+    submitForm(){
+
+    }
+
     render() {
         return (
-            <div>
-                
-            </div>
+            <Fade>
+                <div className="enroll_wrapper">
+                    <form onSubmit={ (event)=> this.submitForm(event)}>
+                        <div className="enroll_title">
+                            Enter your email
+                        </div>
+                        <div className="enroll_input">
+                            <FormField
+                                id={'email'}
+                                formdata = {this.state.formdata.email}
+
+                            />
+                        </div>
+                    
+                    </form>
+                </div>
+            </Fade>
+            
         );
     }
 }
