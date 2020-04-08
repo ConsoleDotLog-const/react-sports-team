@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Fade from 'react-reveal/Fade';
 import FormField from '../../UI/formFields'
+import { validate } from '../../UI/misc'
 
 
 class Enroll extends Component {
@@ -27,7 +28,34 @@ class Enroll extends Component {
         }
     }
 
+    updateForm(element){
+
+        const newFormdata = {...this.state.formdata}
+        const newElement = {...newFormdata[element.id]}
+
+        newElement.value = element.event.target.value
+        newFormdata[element.id] = newElement
+
+        let valiData = validate(newElement)
+        newElement.valid = valiData[0]
+        newElement.validationMessage = valiData[1]
+
+            console.log(newFormdata)
+        
+
+
+
+
+        this.setState({
+            formdata: newFormdata
+        })
+        
+        
+
+    }
+
     submitForm(){
+
 
     }
 
@@ -43,6 +71,7 @@ class Enroll extends Component {
                             <FormField
                                 id={'email'}
                                 formdata = {this.state.formdata.email}
+                                change={(element)=> this.updateForm(element)}
 
                             />
                         </div>
