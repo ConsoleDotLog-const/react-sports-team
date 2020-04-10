@@ -3,6 +3,7 @@ import Fade from 'react-reveal/Fade';
 import FormField from '../../UI/formFields'
 import { validate } from '../../UI/misc'
 
+import { firebasePromotions } from '../../../firebase'
 
 class Enroll extends Component {
 
@@ -47,6 +48,32 @@ class Enroll extends Component {
         })
     }
 
+    resetFormSuccess(type){
+        const newFormdata = {...this.state.formdata}
+
+        for(let key in newFormdata){
+            newFormdata[key].value = ""
+            newFormdata[key].valid = false
+            newFormdata[key].validationMessage = ""
+        }
+
+        this.setState({
+            fromError: false,
+            formdata: newFormdata,
+            formSuccess: type ? 'Congratulations' : "already on the database"
+
+        })
+        this.successMessage()
+    }
+
+    successMessage(){
+        setTimeout(()=>{
+            this.setState({
+                formSuccess:''
+            })
+        },1500)
+    }
+
     submitForm(event){
         event.preventDefault()
 
@@ -58,7 +85,17 @@ class Enroll extends Component {
             formIsValid = this.state.formdata[key].valid && formIsValid
         }
         if(formIsValid){
-            console.log(dataToSubmit)
+            firebasePromotions.orderByChild('email').equalTo(dataToSubmit.email).once("value").then((snapshot)=>{
+                if(snapshot.val() === null){
+                        firebasePromotions.push(dataToSubmit)
+                        this.resetFormSuccess(true)
+                }else{
+                         this.resetFormSuccess(false)
+                }
+            })
+
+            
+ 
         }else{
             this.setState({
                 fromError : true
@@ -85,7 +122,9 @@ class Enroll extends Component {
                             />
 
                             {this.state.fromError ? <div className="error_label">Something is wrong, try again</div> : null}
+                             <div className="success_label">{this.state.formSuccess}</div>
                             <button onClick={(event)=> this.submitForm(event)}>ENROLL</button>
+                            <div className="enroll_discl">Lorem epsum</div>
                         </div>
                     
                     </form>
