@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import FormField from '../UI/formFields'
+import { validate } from '../UI/misc'
 
 class SignIn extends Component {
 
@@ -39,6 +41,46 @@ class SignIn extends Component {
         }
     }
 
+    updateForm(element){
+
+        const newFormdata = {...this.state.formdata}
+        const newElement = {...newFormdata[element.id]}
+
+        newElement.value = element.event.target.value
+        newFormdata[element.id] = newElement
+
+        let valiData = validate(newElement)
+        newElement.valid = valiData[0]
+        newElement.validationMessage = valiData[1]
+
+      
+        this.setState({
+            fromError: false,
+            formdata: newFormdata
+        })
+    }
+
+    submitForm(event){
+        event.preventDefault()
+
+        let dataToSubmit = {}
+        let formIsValid = true
+
+        for(let key in this.state.formdata){
+            dataToSubmit[key] = this.state.formdata[key].value
+            formIsValid = this.state.formdata[key].valid && formIsValid
+        }
+        if(formIsValid){
+            console.log(dataToSubmit)
+        }else{
+            this.setState({
+                fromError : true
+            })
+        }
+        
+
+    }
+
 
     render() {
         return (
@@ -47,7 +89,25 @@ class SignIn extends Component {
                     margin:'100px'
                 }}>
 
-                    <form onSubmit={{}}>
+                    <form onSubmit={(event)=> this.submitForm(event)}>
+                        <h2>Please Login</h2>
+
+                        <FormField
+                                id={'email'}
+                                formdata = {this.state.formdata.email}
+                                change={(element)=> this.updateForm(element)}
+
+                                
+                            />
+
+                        <FormField
+                                id={'password'}
+                                formdata = {this.state.formdata.password}
+                                change={(element)=> this.updateForm(element)}
+
+                            />
+
+                             <button onClick={(event)=> this.submitForm(event)}>Login</button>
 
                     </form>
 
