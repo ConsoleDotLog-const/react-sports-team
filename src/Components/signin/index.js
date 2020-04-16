@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { firebase } from '../../firebase'
 import FormField from '../UI/formFields'
 import { validate } from '../UI/misc'
 
@@ -71,7 +72,18 @@ class SignIn extends Component {
             formIsValid = this.state.formdata[key].valid && formIsValid
         }
         if(formIsValid){
-            console.log(dataToSubmit)
+            
+            firebase.auth()
+            .signInWithEmailAndPassword(
+                dataToSubmit.email,
+                dataToSubmit.password
+            ). then(()=>{
+                this.props.history.push('/dashboard')
+            }).catch(error =>{
+                this.setState({
+                    fromError:true
+                })
+            })
         }else{
             this.setState({
                 fromError : true
@@ -106,7 +118,7 @@ class SignIn extends Component {
                                 change={(element)=> this.updateForm(element)}
 
                             />
-
+                            {this.state.fromError ? <div className="error_label">Something is wrong, try again</div> : null}
                              <button onClick={(event)=> this.submitForm(event)}>Login</button>
 
                     </form>
