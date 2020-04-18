@@ -42,10 +42,12 @@ const AdminNav = () => {
             </Link>
         ))
     )
+    
+   
 
     const logoutHandler = () => {
         firebase.auth().signOut().then(()=>{
-            console.log("log out from session")
+            console.log('logout successful')
         },(error)=>{
             console.log("error logging out")
         })
