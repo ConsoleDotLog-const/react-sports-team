@@ -4,6 +4,8 @@ import AdminLayout from '../../../HOC/Admin_layout'
 import FormField from '../../UI/formFields'
 import { validate } from '../../UI/misc'
 
+import { firebaseTeams, firebaseDB, firebaseMatches } from '../../../firebase'
+import { firebaseLooper } from '../../UI/misc'
 
 
 class addEditMatches extends Component {
@@ -163,7 +165,40 @@ state = {
             showlabel:true
         },
     }
+    
 }
+        updateForm(element){
+
+            const newFormdata = {...this.state.formdata}
+            const newElement = {...newFormdata[element.id]}
+
+            newElement.value = element.event.target.value
+            newFormdata[element.id] = newElement
+
+            let valiData = validate(newElement)
+            newElement.valid = valiData[0]
+            newElement.validationMessage = valiData[1]
+
+        
+            this.setState({
+                fromError: false,
+                formdata: newFormdata
+            })
+        }
+
+        componentDidMount(){
+            const matchId = this.props.match.params.id;
+
+            if(!matchId){
+                /// ADD MATCH
+            }else{
+                firebaseDB.ref(`match/${matchId}`).once('value').then((snapshot)=>{
+                    const match = snapshot.val()
+
+                    console.log(match)
+                })
+            }
+        }
 
     render(){
     return (
